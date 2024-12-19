@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eaf8ff;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #6aa9d4;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 20px;
+            padding: 20px;
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .summary {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .metrics {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .metric {
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            width: 120px;
+        }
+        .products-added {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .products-added div {
+            margin-bottom: 10px;
+        }
+        .footer {
+            background-color: #6aa9d4;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#">HOME</a>
+        <a href="#">PROMOTIONS</a>
+        <a href="#">TOOLS</a>
+        <a href="#">REPORT</a>
+        <a href="#">HELP</a>
+    </nav>
+
+    <div class="dashboard">
+        <div class="chart-container">
+            <h2>Clicks and Orders Chart</h2>
+            <canvas id="chart"></canvas>
+        </div>
+
+        <div class="summary">
+            <h3>Summary</h3>
+            <p>Commission: $<span id="commission">0</span></p>
+            <p>Bounties: $<span id="bounties">0</span></p>
+            <p>Conversion Rate: <span id="conversion_rate">0%</span></p>
+        </div>
+
+        <div class="products-added">
+            <h3>Products Added</h3>
+            <div id="product_list">
+                <ul>
+                    {% for product in contex.products %}
+                    <li>{{ product.name }} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="metrics">
+        <div class="metric">
+            <h4>Clicks</h4>
+            <p id="clicks">0</p>
+        </div>
+        <div class="metric">
+            <h4>Ordered Items</h4>
+            <p id="ordered_items">0</p>
+        </div>
+        <div class="metric">
+            <h4>Dispatched Items</h4>
+            <p id="dispatched_items">0</p>
+        </div>
+        <div class="metric">
+            <h4>Returned Items</h4>
+            <p id="returned_items">0</p>
+        </div>
+    </div>
+
+
+
+    <div class="footer">
+        <p>Shipped Item Revenue: $<span id="shipped_revenue">0</span></p>
+        <p>Total Fees: $<span id="total_fees">0</span></p>
+    </div>
+
+    <script>
+        // JS code for rendering the chart (can use Chart.js or similar library)
+    </script>
+</body>
+</html>
