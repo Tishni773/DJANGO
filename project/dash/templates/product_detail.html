@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product View</title>
+    <style>
+        /* Overall page styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ecf0f1; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Product container styling */
+        .product-container {
+            background-color: #ffffff; /* White background for product card */
+            color: #34495e; /* Dark blue-gray text */
+            padding: 40px;
+            margin: 40px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* Left side (Product image and details) */
+        .product-image {
+            flex: 1;
+            max-width: 20000px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #ecf0f1; /* Light gray background to complement white */
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-image-text {
+            color: #7f8c8d; /* Gray text */
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Right side (Product details) */
+        .product-details {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .product-name {
+            font-size: 36px;
+            font-weight: bold;
+            color: #34495e; /* Dark blue-gray text */
+        }
+
+        .product-category, .product-price, .stock-status, .commission-rate, .product-owner, .created-date, .product-description {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #34495e;
+        }
+
+        .product-category span, .price, .commission-rate span, .product-owner span, .created-date span {
+            font-weight: bold;
+            color: #1abc9c; /* Turquoise green */
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: #7f8c8d; /* Lighter gray for description */
+        }
+
+        /* Stock status color coding */
+        .in-stock {
+            color: #2ecc71; /* Green for in stock */
+        }
+
+        .out-of-stock {
+            color: #e74c3c; /* Red for out of stock */
+        }
+
+        /* Button styling */
+        .manage-button {
+            background-color: #1abc9c; /* Turquoise green */
+            color: white;
+            padding: 18px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 230px;
+            transition: background-color 0.3s ease;
+        }
+
+        
+
+        /* Manage Button */
+        .manage-button {
+            background-color: #3a75c2; /* Yellow-orange */
+            margin-top: 10px;
+        }
+
+        .manage-button:hover {
+            background-color: #24618a; /* Darker yellow-orange on hover */
+        }
+
+        /* Right Sidebar for Stats */
+        .stats-sidebar {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 300px;
+            flex-shrink: 0;
+            border-left: 2px solid #dcdfe1; /* Light gray border separating the sidebar */
+        }
+
+        .stats-sidebar h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        .stat-item span {
+            font-weight: bold;
+            color: #1abc9c;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .product-image {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .product-details {
+                gap: 15px;
+            }
+
+            
+
+            .stats-sidebar {
+                width: 100%;
+                margin-top: 30px;
+            }
+        }
+
+        /* Additional Styling */
+        .product-details p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .product-description {
+            padding-top: 20px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-container">
+        <!-- Product Image Section -->
+        <div class="product-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+            {% else %}
+                <p class="no-image-text">No image available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="product-details">
+            <h2 class="product-name">{{ product.name }}</h2>
+            <p class="product-category">Category: <span>{{ product.category }}</span></p>
+            <p class="product-price">Base Price: <span class="price">${{ product.cost_price }}</span></p>
+            <p class="product-price">Selling Price: <span class="price">${{ product.selling_price }}</span></p>
+            <p class="stock-status">Stock Status: 
+                <span class="{% if product.stock > 0 %}in-stock{% else %}out-of-stock{% endif %}">
+                    {% if product.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}
+                </span>
+            </p>
+            <p class="commission-rate">Commission Rate: <span>{{ product.commission_rate }}%</span></p>
+
+            <!-- Additional Product Information -->
+            <p class="product-description">
+                <span class="section-header">Product Description:</span> 
+                {{ product.description }}
+            </p>
+
+            <p class="product-owner">Owner: <span>{{ product.owner.username }}</span></p>
+            <p class="created-date">Created on: <span>{{ product.created_at }}</span></p>
+
+            <!-- Buttons -->
+            
+            <button class="manage-button">Manage Product</button>
+        </div>
+
+        <!-- Sidebar for Stats -->
+        <div class="stats-sidebar">
+            <h3>Performance metrics</h3>
+            <div class="stat-item">
+                Total Clicks: <span>{{ total_clicks }}</span>
+            </div>
+            <div class="stat-item">
+                Total Sales: <span>${{ total_sales }}</span>
+            </div>
+            <div class="stat-item">
+                Total Earnings: <span> ${{ total_earnings }}</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

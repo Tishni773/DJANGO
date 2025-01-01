@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        /* Add some basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1abc9c;
+        }
+
+        .message {
+            text-align: center;
+            color: green;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Add Product</h2>
+
+        <!-- Form for adding product -->
+        <form action="{% url 'add_product' supplier_id=supplier.id %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Optional: You can include the supplier_id as a hidden field, though this may not be necessary if it's already in the URL -->
+            <input type="hidden" name="supplier_id" value="{{ supplier.id }}">
+
+            <button type="submit">Submit Product</button>
+        </form>
+
+        {% if success %}
+            <div class="message">
+                Product added successfully!
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

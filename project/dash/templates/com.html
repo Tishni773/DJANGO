@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commission Details</title>
+    <link rel="stylesheet" href="path_to_your_styles.css"> <!-- Link to an external stylesheet if needed -->
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #5f788a;
+        }
+
+        header a {
+            text-decoration: none;
+            font-size: 1rem;
+            color: white;
+            padding: 10px 20px;
+            background-color: #4a8bc2;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        header a:hover {
+            background-color: #2e6595;
+        }
+
+        .summary {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .summary h2 {
+            font-size: 1.8rem;
+            color: #6aa9d4;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-table-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-table-container h2 {
+            font-size: 1.8rem;
+            color: #6aa9d4;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f4f4;
+            color: #5f788a;
+            font-weight: bold;
+        }
+
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            table th, table td {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Commission Details for {{ supplier.name }}</h1>
+        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+    </header>
+
+    <div class="summary">
+        <h2>Commission Summary</h2>
+        <p><strong>Total Commission:</strong> ${{ total_commission }}</p>
+        <p><strong>Total Bounties:</strong> ${{ total_bounties }}</p>
+        <p><strong>Total Profit:</strong> ${{ total_profit }}</p>
+    </div>
+
+    <div class="product-table-container">
+        <h2>Product-wise Commission Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Commission ($)</th>
+                    <th>Bounty ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.commission }}</td>
+                    <td>{{ product.bounty }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
