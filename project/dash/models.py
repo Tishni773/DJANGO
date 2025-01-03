@@ -24,7 +24,7 @@ class Product(models.Model):
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
-    stock = models.PositiveIntegerField() 
+    stock = models.IntegerField(null=True, blank=True)
     commission_rate = models.DecimalField(max_digits=5, decimal_places=2)  
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='products')
      

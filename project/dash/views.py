@@ -1,9 +1,8 @@
 import plotly.graph_objs as go
-from django.shortcuts import render, get_object_or_404
-from .models import Product, Supplier
+from django.shortcuts import render, get_object_or_404, redirect
 from decimal import Decimal
-from django.shortcuts import render, redirect
-from .forms import ProductForm
+from .forms import ProductForm, Product
+from .models import Supplier
 
 def dashboard(request):
     supplier = get_object_or_404(Supplier, id=0)  # Replace `0` with the appropriate supplier ID
@@ -49,6 +48,7 @@ def dashboard(request):
 
     context = {
         'supplier': supplier,
+        'supplier_id' : supplier.id,
         'products': products,
         'delivered_items_value': delivered_items_value,
         'profit': profit,
@@ -115,21 +115,16 @@ def com(request, id):
     }
 
     return render(request, 'com.html', context)
-from django.shortcuts import render, redirect
-from .forms import ProductForm
-from .models import Supplier
+
 
 def add_product(request, supplier_id):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            # You can associate the form with the supplier ID here if needed
-            product = form.save(commit=False)
-            product.supplier_id = supplier_id  
-            product.save()
-            return redirect('some_success_page')  
+            # Save the form, creating the product in the database
+            form.save()
+            return redirect('product_list')  # Or redirect to a success page
     else:
         form = ProductForm()
 
-    return render(request, 'add_product.html', {'form': form, 'supplier_id': supplier_id})
-
+    return render(request, 'add_product.html', {'form': form})

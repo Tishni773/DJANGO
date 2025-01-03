@@ -1,3 +1,6 @@
+Can't create, edit, or upload … 
+Not enough storage. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -298,24 +301,18 @@
                     <ol>
                         {% for product in products %}
                         <li>
-                            <form action="{% url 'product_detail' product.id %}" method="get">
+                            <form action="{% url 'product_detail' product.id %}" method="get" >
                                 <button type="submit">{{ product.name }} - Category: {{ product.category }}</button>
+                                
                             </form>
                         </li>
                         {% endfor %}
                     </ol>
                 </div>
-                <button id="addProductBtn">Add Product</button>
+                <a id="addProductBtn" href = "{% url 'add_product' supplier_id  %}">Add Product</a>
+                <a id="addProductBtn" href = "#">Manage</a>
             </div>
-            <div id="addProductForm" style="display: none;">
-                <form action="{% url 'add_product' supplier_id=supplier.id %}" method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="hidden" name="supplier_id" value="{{ supplier.id }}">
-                    <button type="submit">Submit Product</button>
-                </form>
-                
-            </div>
+            
                 
             </div>
         </div>
@@ -345,11 +342,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>Shipped Item Revenue: $<span id="shipped_revenue">{{ total_shipped_revenue|floatformat:2 }}</span></p>
-        <p>Total Fees: $<span id="total_fees">{{ total_fees}}
-    <footer>
+
         <script>
             // Get the button and form elements
             const addProductButton = document.getElementById('addProductBtn');
@@ -364,5 +357,10 @@
                 }
             });
         </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Shipped Item Revenue: $<span id="shipped_revenue">{{ total_shipped_revenue|floatformat:2 }}</span></p>
+        <p>Total Fees: $<span id="total_fees">{{ total_fees}}
+    <footer>
 </body>
 </html>
