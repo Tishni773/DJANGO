@@ -1,5 +1,4 @@
-Can't create, edit, or upload … 
-Not enough storage. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +128,7 @@ Not enough storage. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
         }
 
         .box p {
-            font-size: 1em;
+            font-size: 1.5em;
             color: #666;
         }
 
@@ -283,7 +282,9 @@ Not enough storage. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
             <h2>Clicks and Commission Chart</h2>
             {{ graph|safe }}
         </div>
-
+        <!-- <div class="chart-container" style="height: 200px; width: 100%; overflow: hidden;">
+            {{ pie_chart|safe }}
+        </div>-->
         <!-- Summary and Products Section -->
         <div class="box-container">
             <!-- Summary Box -->
@@ -292,6 +293,7 @@ Not enough storage. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
                 <p>Commission: $<span id="commission">{{ commission }}</span></p>
                 <p>Bounties: $<span id="bounties">0</span></p>
                 <p>Profit Margin: <span id="conversion_rate">{{ profit }}</span></p>
+
             </div>
 
             <!-- Products Box -->
@@ -310,7 +312,7 @@ Not enough storage. Get 100 GB of storage for BDT 150.00 BDT 38.00 for 1 month.
                     </ol>
                 </div>
                 <a id="addProductBtn" href = "{% url 'add_product' supplier_id  %}">Add Product</a>
-                <a id="addProductBtn" href = "#">Manage</a>
+                <a id="addProductBtn" href="{% url 'manage_products' %}">Manage</a>
             </div>
             
                 

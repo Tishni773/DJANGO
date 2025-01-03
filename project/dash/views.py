@@ -3,6 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from decimal import Decimal
 from .forms import ProductForm, Product
 from .models import Supplier
+from .models import Product
+from .forms import SupplierLoginForm
+from django.contrib.auth import authenticate, login
 
 def dashboard(request):
     supplier = get_object_or_404(Supplier, id=0)  # Replace `0` with the appropriate supplier ID
@@ -45,7 +48,14 @@ def dashboard(request):
     total_fees = sum(
         (p.selling_price * transaction_fee_percentage) + shipping_fee_per_product for p in shipped_products
     )
-
+    pie_data = {
+        'labels': ['Commission', 'Bounties', 'Profit'],
+        'values': [commission, total_fees, profit],  # Use relevant data
+        'type': 'pie'
+    }
+    pie_chart = go.Figure(data=[pie_data])
+    pie_chart_json = pie_chart.to_html(full_html=False)
+    
     context = {
         'supplier': supplier,
         'supplier_id' : supplier.id,
@@ -58,8 +68,11 @@ def dashboard(request):
         'total_returned_items': total_returned_value,
         'total_fees': total_fees,
         'graph': graph_json,
+        'pie_chart': pie_chart_json,  
+        
     }
     return render(request, 'dashboard.html', context)
+
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -128,3 +141,42 @@ def add_product(request, supplier_id):
         form = ProductForm()
 
     return render(request, 'add_product.html', {'form': form})
+def manage_products(request):
+    # Fetch all products from the database
+    products = Product.objects.all()
+    
+    # Render the products management page
+    return render(request, 'manage_products.html', {'products': products})
+
+def delete_product(request, product_id):
+    # Find and delete the product
+    product = Product.objects.get(id=product_id)
+    product.delete()
+    
+    # Redirect to the manage products page after deletion
+    return redirect('manage_products')
+
+def supplier_login(request):
+    if request.method == "POST":
+        form = SupplierLoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            
+            # Check if the supplier exists with the provided email
+            try:
+                supplier = Supplier.objects.get(email=email)
+            except Supplier.DoesNotExist:
+                return render(request, 'supplier_login.html', {'form': form, 'error': 'Supplier not found'})
+
+            # Check if the password matches (you can use custom password validation if needed)
+            if supplier.password == password:  # Or use `make_password` to verify against a hashed password
+                login(request, supplier)  # Log the supplier in (you can modify this to your preferred authentication method)
+                return redirect('dashboard')  # Redirect to the dashboard page
+            else:
+                return render(request, 'supplier_login.html', {'form': form, 'error': 'Invalid password'})
+        else:
+            return render(request, 'supplier_login.html', {'form': form})
+    else:
+        form = SupplierLoginForm()
+    return render(request, 'supplier_login.html', {'form': form})
